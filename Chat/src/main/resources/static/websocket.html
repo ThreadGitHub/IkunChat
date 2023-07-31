@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>websocket</title>
+		<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript" charset="UTF-8"></script>
+	</head>
+	<script>
+		$(function(){
+			var ws = new WebSocket("ws://82.157.172.249:8888");
+			var heartTime;
+			if(window.WebSocket){
+
+				// 连接服务器
+				ws.onopen = function(){
+					debugger
+					var html = "<span style='color:green'>连接服务器成功</span></br>";
+					$("#toke").append(html);
+                    // 连接成功后发送心跳
+					sendHeart();
+				}
+
+				// 断开服务器
+				ws.onclose = function(e){
+					clearInterval(heartTime);
+					var html = "<span style='color:red'>客户端断开连接</span></br>"
+					$("#toke").append(html);
+
+				}
+
+				// 服务器发生异常
+				ws.onerror = function(){
+					var html = "<span style='color:red'>服务器异常</span></br>"
+					$("#toke").append(html);
+				}
+
+				ws.onmessage = function(data){
+                    // 判断服务端返回的值是否为心跳返回值
+					if(data.data == "ws-heart"){
+						return;
+					}
+					var html = "<span>"+ data.data +"</span></br>"
+					$("#toke").append(html);
+
+					// 滚动条到底部
+					scroll();
+				}
+			} else{
+				alert("当前浏览器不支持WebSocket!");
+			}
+
+			$("#con").bind('keyup', function (event) {
+				if(event.keyCode == 13){
+					sendMsg();
+				}
+			});
+
+			$("#send").click(function (){
+				sendMsg();
+			});
+
+			// 发送消息
+			function sendMsg() {
+				var msg = $("#con").val();
+				ws.send(msg);
+				msg = "<span style='color:blue;display:block;text-align:right;margin-right:2px'>"+"我: " +  msg +"</span>";
+				var showMsg = $("#toke");
+				showMsg.append(msg);
+				$("#con").val('')
+
+				// 滚动条到底部
+				scroll();
+			}
+
+			function sendHeart(){
+				heartTime = setInterval(function(){
+					ws.send("ws-heart");
+				},5000);
+			}
+
+			// 定时滚动条到底部
+			function scroll() {
+				document.getElementById('toke').scrollTop = document.getElementById('toke').scrollHeight
+			}
+		})
+	</script>
+	<body style="margin-left: 40%;">
+		<div style="width: 400px;height: 200px;display: block;">
+			<img src="/static/ikunteam.jpg" style="width: 100%;height: 100%;">
+		</div>
+		<div id="toke" style="width: 400px;height: 400px;overflow: auto;border: 1px solid #f00;">
+		</div>
+		<textarea type="text" name="con" id="con" width="100px" style="width: 397px; height: 51px;"></textarea>
+		<br/>
+		<button id="send" style="width:400px;height:40px;color: white;background-color: #63a8f7;border: 1px solid blue;">
+			真ikun就狠狠发送
+		</button>
+	</body>
+</html>

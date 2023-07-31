@@ -1,0 +1,7 @@
+server:
+  port: 777
+spring:
+  application:
+    name: chat-boot
+  mvc:
+    static-path-pattern: /static/**
