@@ -6,8 +6,9 @@
 		<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js" type="text/javascript" charset="UTF-8"></script>
 	</head>
 	<script>
+		var hostname = location.hostname;
 		$(function(){
-			var ws = new WebSocket("ws://82.157.172.249:8888");
+			var ws = new WebSocket("ws://"+ hostname +":8888");
 			var heartTime;
 			if(window.WebSocket){
 

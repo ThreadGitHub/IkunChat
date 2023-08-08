@@ -29,6 +29,13 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         this.add("小黑宝");
         this.add("真ikun");
         this.add("坤坤本坤");
+        this.add("可爱坤");
+        this.add("坤坤的小可爱");
+        this.add("坤坤的小娇妻");
+        this.add("ikun无敌");
+        this.add("ikun万岁");
+        this.add("ikun");
+        this.add("坤坤");
     }};
 
     /**
@@ -40,7 +47,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, TextWebSocketFrame textWebSocketFrame) throws Exception {
         String text = textWebSocketFrame.text();
-        System.out.println("接收到消息: " + text);
+        log.info("接收到消息: " + text);
         // 判断接收内容是否为心跳值
         if(HEART.equals(text)){
             TextWebSocketFrame socketFrame = new TextWebSocketFrame(HEART);
@@ -79,7 +86,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         String alias = this.getAlias();
         contextMap.put(alias, ctx);
         nameMap.put(ctx, alias);
-        System.out.println("用户连接");
+        log.info("用户连接");
 
         /**
          * 异步发送通知
@@ -93,7 +100,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
             ctx.writeAndFlush(new TextWebSocketFrame("服务器: 分配昵称【"+ alias +"】"));
         });
 
-        System.out.println(alias + ": 用户连接");
+        log.info(alias + ": 用户连接");
         this.broadcast(alias, "用户连接");
     }
 
@@ -112,7 +119,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         nameMap.remove(ctx);
 
         // 广播下线通知
-        System.out.println(alias + ": 用户断开");
+        log.info(alias + ": 用户断开");
         this.broadcast(alias, "用户断开连接");
     }
 
@@ -125,7 +132,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
-        System.out.println("用户非正常断开");
+        log.info("用户非正常断开");
     }
 
     /**

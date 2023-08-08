@@ -5,3 +5,12 @@ spring:
     name: chat-boot
   mvc:
     static-path-pattern: /static/**
+
+logging:
+  pattern:
+    console: '%d{yyyy-MM-dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n'
+    file: '%d{yyyy-MM-dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n'
+  file:
+    name: './chat-log.log'
+  level:
+    root: info
