@@ -8,6 +8,9 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
@@ -17,8 +20,12 @@ import java.util.concurrent.TimeUnit;
  * @author thread
  * @date 2023/7/28 16:49
  */
+@Slf4j
 @Configuration
 public class WebSocketServer {
+    @Autowired
+    private ApplicationContext applicationContext;
+
     @PostConstruct
     public void start() {
         EventLoopGroup masterEventLoopGroup = new NioEventLoopGroup();
@@ -37,13 +44,13 @@ public class WebSocketServer {
 
                         // 在30分钟之内收不到消息自动断开
                         pipeline.addLast(new ReadTimeoutHandler(30, TimeUnit.MINUTES));
-                        pipeline.addLast(new WebSocketHandler());
+                        pipeline.addLast(applicationContext.getBean(WebSocketHandler.class));
                     }
                 })
-                .bind(8888);
+                .bind(8888); 
         try {
             channelFuture.sync();
-            System.out.println("连接服务器成功...");
+            log.info("连接WebSocket服务器成功...");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

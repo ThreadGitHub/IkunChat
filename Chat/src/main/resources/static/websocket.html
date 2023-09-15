@@ -8,6 +8,20 @@
 	<script>
 		var hostname = location.hostname;
 		$(function(){
+			$.ajax({
+				url: '/chat-message/list',
+				type: 'get',
+				async: false,
+				success: function(data) {
+					console.log("历史聊天记录：");
+					console.log(data);
+					for (let i = 0; i < data.length; i++) {
+						let message = "[" + data[i].nickName + "]: " + data[i].message;
+						addMessage(data[i].time, message)
+					}
+				}
+			})
+
 			var ws = new WebSocket("ws://"+ hostname +":8888");
 			var heartTime;
 			if(window.WebSocket){
@@ -83,18 +97,27 @@
 			function scroll() {
 				document.getElementById('toke').scrollTop = document.getElementById('toke').scrollHeight
 			}
+
+			function addMessage(time, message) {
+				var html = '<div style="background-color: bisque;margin-top: 2px;margin-bottom: 2px;margin-left: 4px;margin-right: 4px;padding-left: 10px;padding-right: 10px;"> ';
+				html += '<span style="font-size: 13px;color: brown;">'+ time +'</span><br>';
+				html += '<span>'+ message +'</span>';
+				html += '</div>';
+				$("#toke").append(html);
+			}
 		})
 	</script>
-	<body style="margin-left: 40%;">
-		<div style="width: 400px;height: 200px;display: block;">
+	<body style="margin-left: 32%;">
+		<div style="width: 550px;height: 200px;display: block;">
 			<img src="/static/ikunteam.jpg" style="width: 100%;height: 100%;">
 		</div>
-		<div id="toke" style="width: 400px;height: 400px;overflow: auto;border: 1px solid #f00;">
+		<div id="toke" style="width: 550px;height: 400px;overflow: auto;border: 1px solid #f00;">
 		</div>
-		<textarea type="text" name="con" id="con" width="100px" style="width: 397px; height: 51px;"></textarea>
+		<textarea type="text" name="con" id="con" width="100px" style="width: 549px; height: 64px;"></textarea>
 		<br/>
-		<button id="send" style="width:400px;height:40px;color: white;background-color: #63a8f7;border: 1px solid blue;">
+		<button id="send" style="width:552px;height:40px;color: white;background-color: #63a8f7;border: 1px solid blue;">
 			真ikun就狠狠发送
 		</button>
+		<p>欢迎Ikun加入更多功能一起守护坤坤：<a href="https://github.com/ThreadGitHub/IkunChat">ThreadGitHub/IkunChat</a></p>
 	</body>
 </html>

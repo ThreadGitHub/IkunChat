@@ -5,7 +5,11 @@ spring:
     name: chat-boot
   mvc:
     static-path-pattern: /static/**
-
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite::resource:db/test.db
+    hikari:
+      auto-commit: true
 logging:
   pattern:
     console: '%d{yyyy-MM-dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n'
@@ -14,3 +18,4 @@ logging:
     name: './chat-log.log'
   level:
     root: info
+    org.springframework.jdbc.core: DEBUG

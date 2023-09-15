@@ -4,8 +4,15 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
+import org.chat.mapper.ChatMessageMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -15,8 +22,13 @@ import java.util.concurrent.TimeUnit;
  * @author thread
  * @date 2023/7/28 16:52
  */
+@Component
+@Scope(value = "prototype")
 @Slf4j
 public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+    @Autowired
+    private ChatMessageMapper chatMessageMapper;
+
     private final String HEART = "ws-heart";
 
     private static List<String> nameSets = new ArrayList<String>(){{
@@ -102,6 +114,9 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
 
         log.info(alias + ": 用户连接");
         this.broadcast(alias, "用户连接");
+
+        // 记录消息表
+//        chatMessageMapper.insert(alias, "用户连接");
     }
 
     /**
@@ -121,6 +136,9 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         // 广播下线通知
         log.info(alias + ": 用户断开");
         this.broadcast(alias, "用户断开连接");
+
+        // 记录消息表
+//        chatMessageMapper.insert(alias, "用户断开连接");
     }
 
     /**
@@ -133,12 +151,18 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
         log.info("用户非正常断开");
+        // 记录消息表
+        String alias = nameMap.get(ctx);
+        chatMessageMapper.insert(alias, "用户非正常断开");
     }
 
     /**
      * 将消息群发给所有在线的人
      */
     private void broadcast(String alias, String msg) {
+        // 记录消息表
+        chatMessageMapper.insert(alias, msg);
+
         msg = alias + ": " + msg;
         String finalMsg = msg;
         contextMap.entrySet().parallelStream().forEach(e -> {
