@@ -1,5 +1,6 @@
 package org.chat.controller;
 
+import lombok.AllArgsConstructor;
 import org.chat.domain.entity.ChatMessage;
 import org.chat.mapper.ChatMessageMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,9 @@ import java.util.List;
  * @date 2023/9/15 14:50
  */
 @RestController
+@AllArgsConstructor
 @RequestMapping("/chat-message")
 public class ChatMessageController {
-    @Autowired
     private ChatMessageMapper chatMessageMapper;
 
 //    @GetMapping("/insert")
