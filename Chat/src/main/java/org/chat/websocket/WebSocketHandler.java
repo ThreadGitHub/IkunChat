@@ -65,9 +65,19 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
             TextWebSocketFrame socketFrame = new TextWebSocketFrame(HEART);
             channelHandlerContext.writeAndFlush(socketFrame);
         } else {
+            String alias = nameMap.get(channelHandlerContext);
+            if(text != null && text.contains("updateNikeName")){
+                String updateNikeName = text.replace("updateNikeName", "");
+                nameMap.put(channelHandlerContext,updateNikeName);
+                contextMap.remove(alias);
+                contextMap.put(updateNikeName,channelHandlerContext);
+                this.broadcast(updateNikeName, "用户【"+alias+"】名称变更为【"+updateNikeName+"】");
+                return ;
+            }
+
             // 如果不是心跳就把接收到的消息转发给每个客户端
             String message = textWebSocketFrame.text();
-            String alias = nameMap.get(channelHandlerContext);
+
             this.broadcast(alias, message);
         }
     }
