@@ -71,6 +71,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
                 nameMap.put(channelHandlerContext,updateNikeName);
                 contextMap.remove(alias);
                 contextMap.put(updateNikeName,channelHandlerContext);
+                channelHandlerContext.writeAndFlush(new TextWebSocketFrame("我的昵称：" + updateNikeName));
                 this.broadcast(updateNikeName, "用户【"+alias+"】名称变更为【"+updateNikeName+"】");
                 return ;
             }

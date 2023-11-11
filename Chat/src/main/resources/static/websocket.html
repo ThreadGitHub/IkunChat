@@ -34,7 +34,7 @@
                     // 连接成功后发送心跳
 					sendHeart();
 
-					var ret = prompt('修改昵称？');
+					var ret = prompt('是否自定义昵称?');
 					if(ret != null && ret != ''){
 						ws.send('updateNikeName'+ret);
 					}
