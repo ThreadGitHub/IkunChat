@@ -8,6 +8,12 @@
 	<script>
 		var hostname = location.hostname;
 		$(function(){
+			// 视频居中
+			var height = document.getElementsByTagName("video")[0].offsetHeight;
+			$("#video-div").css("padding-top", (window.innerHeight - height) /2 + "px");
+
+			document.getElementById("video-tag").load();
+
 			$.ajax({
 				url: '/chat-message/list',
 				type: 'get',
@@ -28,7 +34,6 @@
 
 				// 连接服务器
 				ws.onopen = function(){
-					debugger
 					var html = "<span style='color:green'>连接服务器成功</span></br>";
 					$("#toke").append(html);
                     // 连接成功后发送心跳
@@ -112,17 +117,24 @@
 			}
 		})
 	</script>
-	<body style="margin-left: 32%;">
-		<div style="width: 550px;height: 200px;display: block;">
-			<img src="/static/ikunteam.jpg" style="width: 100%;height: 100%;">
+	<body>
+		<div id="video-div" style="width: 40%;height: 100%;float: left">
+			<video id="video-tag" style="width: 100%;" autoplay="autoplay" loop preload="auto" controls>
+				<source src="/static/video.mp4" type="video/mp4">
+			</video>
 		</div>
-		<div id="toke" style="width: 550px;height: 400px;overflow: auto;border: 1px solid #f00;">
+		<div style="width: 40%;height: 100%;float: left;padding-left:20px;">
+			<div style="width: 550px;height: 200px;display: block;">
+				<img src="/static/ikunteam.jpg" style="width: 100%;height: 100%;">
+			</div>
+			<div id="toke" style="width: 550px;height: 400px;overflow: auto;border: 1px solid #f00;">
+			</div>
+			<textarea type="text" name="con" id="con" width="100px" style="width: 549px; height: 64px;"></textarea>
+			<br/>
+			<button id="send" style="width:552px;height:40px;color: white;background-color: #63a8f7;border: 1px solid blue;">
+				真ikun就狠狠发送
+			</button>
+			<p>欢迎Ikun加入更多功能一起守护坤坤：<a href="https://github.com/ThreadGitHub/IkunChat">ThreadGitHub/IkunChat</a></p>
 		</div>
-		<textarea type="text" name="con" id="con" width="100px" style="width: 549px; height: 64px;"></textarea>
-		<br/>
-		<button id="send" style="width:552px;height:40px;color: white;background-color: #63a8f7;border: 1px solid blue;">
-			真ikun就狠狠发送
-		</button>
-		<p>欢迎Ikun加入更多功能一起守护坤坤：<a href="https://github.com/ThreadGitHub/IkunChat">ThreadGitHub/IkunChat</a></p>
 	</body>
 </html>
