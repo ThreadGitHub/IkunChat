@@ -21,4 +21,4 @@ docker run --name ikun-chat \
            -d \
            -v $dbfile:/ikun-chat/db \
            -p 777:777 -p 8888:8888 \
-       registry.cn-hangzhou.aliyuncs.com/thread-docker-hub/ikun-chat
+registry.cn-hangzhou.aliyuncs.com/thread-docker-hub/ikun-chat
