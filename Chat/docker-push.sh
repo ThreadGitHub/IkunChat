@@ -1,3 +1,5 @@
+mvn clean & mvn package -Dmaven.test.skip=true
+
 # 处理参数
 tag=$1
 if [ -z $1 ]; then
