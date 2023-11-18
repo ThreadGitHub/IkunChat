@@ -140,5 +140,15 @@
 	var height = videoTag.offsetHeight;
 	$("#video-div").css("padding-top", (window.innerHeight - height) /2 + "px");
 
-	videoTag.play();
+	// 自动播放
+	var promise = videoTag.play();
+	if (promise !== undefined) {
+		promise.then(function() {
+			console.log("视频已自动播放");
+		}).catch(function(error) {
+			console.log("自动播放被阻止");
+			videoTag.muted = true;
+			videoTag.play();
+		});
+	}
 </script>
