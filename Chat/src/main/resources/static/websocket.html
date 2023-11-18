@@ -8,10 +8,6 @@
 	<script>
 		var hostname = location.hostname;
 		$(function(){
-			// 视频居中
-			var height = document.getElementsByTagName("video")[0].offsetHeight;
-			$("#video-div").css("padding-top", (window.innerHeight - height) /2 + "px");
-
 			document.getElementById("video-tag").load();
 
 			$.ajax({
@@ -138,3 +134,11 @@
 		</div>
 	</body>
 </html>
+<script type="text/javascript">
+	// 视频居中
+	var videoTag = document.getElementById("video-tag");
+	var height = videoTag.offsetHeight;
+	$("#video-div").css("padding-top", (window.innerHeight - height) /2 + "px");
+
+	videoTag.play();
+</script>
