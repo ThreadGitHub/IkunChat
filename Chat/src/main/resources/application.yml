@@ -8,8 +8,28 @@ spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
     url: jdbc:sqlite::resource:db/test.db
-    hikari:
-      auto-commit: true
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5 # 连接池初始化时创建的连接数
+      min-idle: 5 # 连接池中保持的最小空闲连接数
+      max-active: 20 # 连接池中允许的最大活动连接数
+      max-wait: 60000 # 获取连接时的最大等待时间，超过此时间将抛出异常
+      time-between-eviction-runs-millis: 60000 # 两次检查连接的时间间隔
+      min-evictable-idle-time-millis: 300000 # 连接最小空闲时间，超过这个时间的连接将被回收
+      remove-abandoned: true # 是否自动回收超时连接
+      remove-abandoned-timeout-millis: 1800 # 自动回收超时连接的等待时间
+      # 监控
+      filters: stat,wall
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+      # 监控用户名和密码，用于登录监控页面
+      username: admin
+      password: admin
+
 logging:
   pattern:
     console: '%d{yyyy-MM-dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n'
