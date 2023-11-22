@@ -23,12 +23,13 @@ spring:
       stat-view-servlet:
         enabled: true
         url-pattern: /druid/*
+        login-username: admin
+        login-password: admin
+        # 为空表示允许远程访问监控
+        allow:
       web-stat-filter:
         enabled: true
         url-pattern: /*
-      # 监控用户名和密码，用于登录监控页面
-      username: admin
-      password: admin
 
 logging:
   pattern:
