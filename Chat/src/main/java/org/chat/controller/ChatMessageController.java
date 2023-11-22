@@ -29,7 +29,7 @@ public class ChatMessageController {
 
     @GetMapping("/list")
     public List<ChatMessage> list() {
-        List<ChatMessage> list = chatMessageMapper.list(Integer.MAX_VALUE);
+        List<ChatMessage> list = chatMessageMapper.list();
         return list;
     }
 }

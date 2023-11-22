@@ -16,8 +16,8 @@ class ChatApplicationTests {
 
     @Test
     void contextLoads() {
-        List<ChatMessage> list = chatMessageMapper.list(1000);
-        System.out.println(list);
+//        List<ChatMessage> list = chatMessageMapper.list(1000);
+//        System.out.println(list);
 
         ChatMessage chatMessage = ChatMessage.builder().build();
         chatMessage.setNickName("ccc");

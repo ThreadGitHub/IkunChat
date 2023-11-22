@@ -2,6 +2,9 @@ package org.chat.mapper;
 
 import org.chat.domain.entity.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +22,9 @@ public class ChatMessageMapper {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<ChatMessage> list(Integer limit) {
-        String sql = "select * from chat_message limit " + limit;
+//    @Cacheable(value = "list-data")
+    public List<ChatMessage> list() {
+        String sql = "select * from chat_message";
         List<ChatMessage> chatMessageList = jdbcTemplate.query(sql, (rs, rowNum) -> {
             ChatMessage chatMessage = ChatMessage.builder().build();
             long id = rs.getLong("id");
@@ -36,7 +40,6 @@ public class ChatMessageMapper {
         return chatMessageList;
     }
 
-//    @Transactional(rollbackFor = Exception.class)
     public int insert(ChatMessage chatMessage) {
         String sql = "insert into chat_message(nick_name, message, time) values(?, ?, ?)";
         Date time = chatMessage.getTime();
@@ -49,6 +52,7 @@ public class ChatMessageMapper {
         return this.insert(chatMessage);
     }
 
+//    @CacheEvict(value = "list-data")
     public int insert(String nickName, String msg) {
         return this.insert(nickName, msg, new Date());
     }
