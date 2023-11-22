@@ -24,7 +24,7 @@ spring:
         enabled: true
         url-pattern: /druid/*
         login-username: admin
-        login-password: admin
+        login-password: System.Druid
         # 为空表示允许远程访问监控
         allow:
       web-stat-filter:
