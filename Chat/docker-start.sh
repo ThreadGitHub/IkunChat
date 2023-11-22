@@ -1,8 +1,9 @@
-# 拉取最新镜像
-docker pull registry.cn-hangzhou.aliyuncs.com/thread-docker-hub/ikun-chat:latest
-
 # 干掉运行的容器
 docker rm -f ikun-chat
+docker rmi registry.cn-hangzhou.aliyuncs.com/thread-docker-hub/ikun-chat:latest
+
+# 拉取最新镜像
+docker pull registry.cn-hangzhou.aliyuncs.com/thread-docker-hub/ikun-chat:latest
 
 # sqllite
 dbfile=$1
